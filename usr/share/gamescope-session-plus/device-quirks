@@ -160,6 +160,11 @@ if [[ ":AYANEO 2:AYANEO 2S:" =~ ":$SYS_ID:"  ]]; then
   INTERNAL_HEIGHT=800
 fi
 
+# Minisforum V3 Tablet
+if [[ ":V3:" =~ ":$SYS_ID:"  ]]; then
+  TOUCH_GESTURES=1
+fi
+
 # GPUs that require the SDL backend
 if /usr/libexec/gamescope-sdl-workaround; then
   BACKEND=sdl
