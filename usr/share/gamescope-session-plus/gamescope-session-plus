@@ -183,14 +183,19 @@ if [ -z "$GAMESCOPECMD" ]; then
 		ADAPTIVE_SYNC_OPTION="--adaptive-sync"
 	fi
 
+	FORCE_COMPOSITION_OPTION=""
+	if [ -n "$FORCE_COMPOSITION" ]; then
+		FORCE_COMPOSITION_OPTION="--force-composition"
+	fi
+
 	PANEL_TYPE_OPTION=""
 	if [ -n "$PANEL_TYPE" ] && gamescope_has_option "--force-panel-type"; then
 		PANEL_TYPE_OPTION="--force-panel-type $PANEL_TYPE"
 	fi
 
-	BYPASS_STEAM_RESOLUTION=""
+	BYPASS_STEAM_RESOLUTION_OPTION=""
 	if [ ! -n "$DONT_BYPASS_RESOLUTION" ] && gamescope_has_option "--bypass-steam-resolution"; then
-		BYPASS_STEAM_RESOLUTION="--bypass-steam-resolution"
+		BYPASS_STEAM_RESOLUTION_OPTION="--bypass-steam-resolution"
 	fi
 
 	CUSTOM_REFRESH_RATES_OPTION=""
@@ -198,40 +203,42 @@ if [ -z "$GAMESCOPECMD" ]; then
 		CUSTOM_REFRESH_RATES_OPTION="--custom-refresh-rates $CUSTOM_REFRESH_RATES"
 	fi
 	
-	BACKEND=""
+	BACKEND_OPTION=""
 	# Check if an older GPU that needs the SDL workaround is in use.
-	if /usr/libexec/gamescope-sdl-workaround && gamescope_has_option "--backend"; then
-		BACKEND="--backend sdl"
+	if [ -n "$BACKEND" ] && gamescope_has_option "--backend"; then
+		BACKEND_OPTION="--backend $BACKEND"
 	fi
 	
-	DISABLE_TOUCH_CLICK=""
-	if [ -x /usr/libexec/hwsupport/hhd-supported-hardware ] && /usr/libexec/hwsupport/hhd-supported-hardware && gamescope_has_option "--disable-touch-click"; then
-		DISABLE_TOUCH_CLICK="--disable-touch-click"
+	DISABLE_TOUCH_CLICK_OPTION=""
+	if [ -n "$DISABLE_TOUCH_CLICK" ] && gamescope_has_option "--disable-touch-click"; then
+		DISABLE_TOUCH_CLICK_OPTION="--disable-touch-click"
 	fi
 	
 	MURA_OPTION=""
-	if [ -n "$MURA" ]; then
+	if [ -n "$MURA" ] && gamescope_has_option "--mura-map"; then
 		MURA_OPTION="--mura-map $MURA"
 	fi
 
-	FORCE_COMPOSITION_OPTION=""
-	if [ -n "$FORCE_COMPOSITION" ]; then
-		FORCE_COMPOSITION_OPTION="--force-composition"
+	TOUCH_GESTURES_OPTION=""
+	if [ -n "$TOUCH_GESTURES" ] && gamescope_has_option "--touch-gestures"; then
+		TOUCH_GESTURES_OPTION="--touch-gestures"
 	fi
 
 	GAMESCOPECMD="/usr/bin/gamescope \
 		$CURSOR \
 		$RESOLUTION \
 		$INTERNAL_RESOLUTION \
-		$ORIENTATION_OPTION \
 		$DRM_MODE_OPTION \
-		$BYPASS_STEAM_RESOLUTION \
-		$PANEL_TYPE_OPTION \
-		$CUSTOM_REFRESH_RATES_OPTION \
-		$BACKEND \
-		$DISABLE_TOUCH_CLICK \
-		$MURA_OPTION \
+		$ORIENTATION_OPTION \
+		$ADAPTIVE_SYNC_OPTION \
 		$FORCE_COMPOSITION_OPTION \
+		$PANEL_TYPE_OPTION \
+		$BYPASS_STEAM_RESOLUTION_OPTION \
+		$CUSTOM_REFRESH_RATES_OPTION \
+		$BACKEND_OPTION \
+		$DISABLE_TOUCH_CLICK_OPTION \
+		$MURA_OPTION \
+		$TOUCH_GESTURES_OPTION \
 		--prefer-output $OUTPUT_CONNECTOR \
 		--xwayland-count $XWAYLAND_COUNT \
 		--default-touch-mode $TOUCH_MODE \

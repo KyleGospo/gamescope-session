@@ -57,6 +57,7 @@ if [[ ":$GDP_LIST:" =~ ":$SYS_ID:"  ]]; then
   OUTPUT_CONNECTOR='*,DSI-1'
   DRM_MODE=fixed
   ORIENTATION=right
+  TOUCH_GESTURES=1
 fi
 
 # GPD Win 3 specifc quirk to prevent crashing
@@ -66,15 +67,19 @@ if [[ ":G1618-03:" =~ ":$SYS_ID:"  ]]; then
   OUTPUT_CONNECTOR='*,DSI-1'
   DRM_MODE=fixed
   ORIENTATION=right
+  TOUCH_GESTURES=1
 fi
 
 #GPD Win 4 supports 40-60hz refresh rate changing
 if [[ ":G1618-04:" =~ ":$SYS_ID:"  ]]; then
+  TOUCH_GESTURES=1
+
   export STEAM_DISPLAY_REFRESH_LIMITS=40,60
 fi
 
 # GPD Win mini
 if [[ ":G1617-01:" =~ ":$SYS_ID:"  ]]; then
+  TOUCH_GESTURES=1
   ORIENTATION=""
   if ( xrandr --prop 2>$1 | grep -e "1080x1920 " > /dev/null ) ; then
      ORIENTATION=right
@@ -153,4 +158,14 @@ if [[ ":AYANEO 2:AYANEO 2S:" =~ ":$SYS_ID:"  ]]; then
   SCREEN_HEIGHT=1200
   INTERNAL_WIDTH=1280
   INTERNAL_HEIGHT=800
+fi
+
+# GPUs that require the SDL backend
+if /usr/libexec/gamescope-sdl-workaround; then
+  BACKEND=sdl
+fi
+
+# HHD Supported Hardware
+if /usr/libexec/hwsupport/hhd-supported-hardware; then
+  DISABLE_TOUCH_CLICK=1
 fi
