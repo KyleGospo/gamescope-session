@@ -98,18 +98,12 @@ export GAMESCOPE_LIMITER_FILE=$(mktemp /tmp/gamescope-limiter.XXXXXXXX)
 # Temporary crutch until dummy plane interactions / etc are figured out
 export GAMESCOPE_DISABLE_ASYNC_FLIPS=1
 
-export XCURSOR_THEME=steam
-export XCURSOR_SCALE=256
-
 # Make Qt apps use the styling and behaviour of the desktop session
 # This fixes some missing icons and unreadable text with Qt desktop apps in gamescope
 if [[ ${BASE_IMAGE_NAME} == 'silverblue' ]]; then
   export QT_QPA_PLATFORM_THEME=gtk2
 else
   export QT_QPA_PLATFORM_THEME=kde
-
-  # Chromium (and therefore Steam) ignore XCursor and use on the GTK config
-  kwriteconfig6 --file gtk-3.0/settings.ini  --group Settings --key gtk-cursor-theme-name steam
 fi
 
 ulimit -n 524288
