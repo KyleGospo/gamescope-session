@@ -328,8 +328,8 @@ if command -v mangoapp >/dev/null; then
 fi
 
 # Start discover-overlay if discord is installed
-if command -v bazzite-discover-overlay > /dev/null; then
-	env DISPLAY=:0 bazzite-discover-overlay 2>&1 &
+if command -v discover-overlay > /dev/null && grep -q "com.discordapp.Discord" <<< $(/usr/bin/flatpak list --app --columns=application); then
+	env DISPLAY=:0 discover-overlay 2>&1 &
 fi
 
 # If the Sunshine service is enabled, restart it
